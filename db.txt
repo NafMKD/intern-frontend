@@ -1,0 +1,116 @@
+
+Database Architechture 
+
+users: 
+    - id : int PK 
+    - email : varchar(255)
+    - email_verified_at : datetime nullable
+    - password : varchar(300)
+    - last_login : datetime
+    - is_staf : boolean
+    - is_superadmin : boolean
+    - is_department_head : boolean
+    - is_school_head : boolean 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+user_informations: php artisan make:model UserInformation -mcr
+    - id : int PK
+    - user_id : int FK (users)
+    - first_name : varchar(100)
+    - middle_name : varchar(100)
+    - last_name : varchar(100)
+    - student_id : varchar(100)
+    - cgpa : real
+    - year_of_study : int
+    - phone : varchar(10)
+    - city : varchar(20)
+    - university : varchar(50)
+    - department : varchar(50)
+    - degree : varchar(50)
+    - about_me : varchar(50)
+    - application_file_path : varchar(50) (application file from the university)
+    - application_acceptance_file_path : varchar(50) (acceptance file from the university)
+    - student_id_file_path : varchar(50) (student id file from the university)
+    - ********* to be added ********** 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+/*** depricated  ***/
+
+user_verifications: php artisan make:model UserVerification -mcr
+    - id : int PK
+    - user_id : int FK (users)
+    - email : int(6) (1-> verified, other-> pending)
+    - phone : int(6) (1-> verified, other-> pending) 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+/********************/
+
+schools: php artisan make:model School -mcr
+    - id : int PK
+    - head_id : int FK (users)
+    - name : varchar(100)
+    - description : text 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+departments: php artisan make:model Department -mcr
+    - id : int PK
+    - school_id : int FK (schools)
+    - head_id : int FK (users)
+    - name : varchar(100)
+    - description : text 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+
+internships: php artisan make:model Internship -mcr
+    - id : int PK
+    - department_id : int FK (departments)
+    - title : varchar(100)
+    - description : text
+    - minimum_cgpa : real
+    - quota : int
+    - deadline : datetime
+    - start_date : date
+    - end_date : date 
+    - status : int (0-> internship closed , 1-> accepting applicants, 2 -> internship started)
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+internship_prerequisites: php artisan make:model internshipPrerequisite -mcr
+    - id : int PK
+    - internship_id : int Fk (internships)
+    - pre_key : varchar(100)
+    - description : varchar(300) 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+user_applications: php artisan make:model UserApplication -mcr
+    - id : int PK
+    - user_id : int FK (users)
+    - internship_id : int FK (internships)
+    - status : int  (0-> pending, 1-> accepted, 2-> rejected) 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+user_prerequisite_resposes: php artisan make:model UserPrerequisiteRespose -mcr
+    - id : int PK 
+    - user_application_id : int FK (user_applications)
+    - internship_prerequisite_id : int FK (internship_prerequisites)
+    - response : text 
+    - created_at : datetime
+    - updated_at : datetime
+    - deleted_at : datetime nullable
+
+
